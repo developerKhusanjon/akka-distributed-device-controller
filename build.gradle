@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group 'dev.khusanjon'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+def versions = [
+        ScalaBinary : "2.13",
+        AkkaVersion : "2.8.2",
+        JUnitVersion : "4.13.2"
+]
+
+dependencies {
+    implementation platform("com.typesafe.akka:akka-bom_${versions.ScalaBinary}:${versions.AkkaVersion}")
+    implementation "com.typesafe.akka:akka-actor-typed_${versions.ScalaBinary}"
+
+    testImplementation "com.typesafe.akka:akka-actor-testkit-typed_${versions.ScalaBinary}"
+    testImplementation "junit:junit:${versions.JUnitVersion}"
+    testCompile 'org.junit.jupiter:junit-jupiter:5.9.2'
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
